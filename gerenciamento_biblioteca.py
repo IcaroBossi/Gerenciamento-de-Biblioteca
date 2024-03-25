@@ -2,6 +2,7 @@
 
 import json
 
+print("Olá! Seja bem-vindo!")
 
 # criando uma lista para armazenar os livros da biblioteca
 import time
@@ -10,22 +11,23 @@ biblioteca = []
 
 # Função para adicionar um livro na biblioteca
 def adicionar_livro():
-    título = input ("Digite o nome do livro")
-    autor = input ("Digite o autor do livro")
-    genero = input ("Digite o gênero do livro")
-    ano_publicação = input ("Digite o ano de publicação do livro")
-    status_emprestimo = False  # Inicialmente o livro não será emprestado
+    titulo = input("Digite o título do livro: ")
+    autor = input("Digite o nome do autor: ")
+    genero = input("Digite o gênero do livro: ")
+    ano_publicacao = input("Digite o ano de publicação: ")
+    status_emprestimo = False  # Inicialmente, o livro não está emprestado
 
     livro = {
-        "título": título,
+        "titulo": titulo,
         "autor": autor,
         "genero": genero,
-        "ano_publicação": ano_publicação,
+        "ano_publicacao": ano_publicacao,
         "status_emprestimo": status_emprestimo
     }
 
     biblioteca.append(livro)
     print("Livro adicionado com sucesso!\n")
+    salvar_biblioteca()
 
 # Função para mostrar os livros disponiveis na biblioteca
 def listar_livros():
@@ -34,10 +36,22 @@ def listar_livros():
     else:
         for idx, livro in enumerate(biblioteca, start=1):
             print(f"\nLivro {idx}:")
-            print(f"Título: {livro['titulo']}")
-            print(f"Autor: {livro['autor']}")
-            print(f"Gênero: {livro['genero']}")
-            print(f"Ano de Publicação: {livro['ano_publicacao']}")
+            if 'titulo' in livro:
+                print(f"Título: {livro['titulo']}")
+            else:
+                print("Título não especificado")
+            if 'autor' in livro:
+                print(f"Autor: {livro['autor']}")
+            else:
+                print("Autor não especificado")
+            if 'genero' in livro:
+                print(f"Gênero: {livro['genero']}")
+            else:
+                print("Gênero não especificado")
+            if 'ano_publicacao' in livro:
+                print(f"Ano de Publicação: {livro['ano_publicacao']}")
+            else:
+                print("Ano de publicação não especificado")
             status = "Disponível" if not livro['status_emprestimo'] else "Emprestado"
             print(f"Status: {status}")
 
@@ -69,15 +83,20 @@ def remover_livro():
         print("A biblioteca está vazia. Não há livros para remover.")
     else:
         titulo = input("Digite o título do livro que deseja remover: ")
-        autor = input("Digite o nome do autor do livro que deseja remover: ")
 
+        livro_encontrado = False
         for livro in biblioteca:
-            if livro['titulo'].lower() == titulo.lower() and livro['autor'].lower() == autor.lower():
-                biblioteca.remove(livro)
-                print("Livro removido com sucesso.")
-                break
-        else:
+            if 'titulo' in livro and 'autor' in livro:
+                if livro['titulo'].lower() == titulo.lower():
+                    biblioteca.remove(livro)
+                    print("Livro removido com sucesso.")
+                    livro_encontrado = True
+                    break
+
+        if not livro_encontrado:
             print("Livro não encontrado na biblioteca.")
+
+        salvar_biblioteca()
 
 # Função para emprestar um livro
 def emprestar_livro():
@@ -99,6 +118,8 @@ def emprestar_livro():
         else:
             print("Livro não encontrado na biblioteca.")
 
+        salvar_biblioteca()
+
 
 # Função para devolver algum livro
 def devolver_livro():
@@ -115,6 +136,8 @@ def devolver_livro():
                 break
         else:
             print("Livro não encontrado na biblioteca ou não está emprestado.")
+
+        salvar_biblioteca()
 
 # Função para salvar os dados da biblioteca em um arquivo e carregar esses dados quando o programa for iniciado novamente.
 def salvar_biblioteca():
@@ -133,7 +156,7 @@ def carregar_biblioteca():
         print("Arquivo de dados da biblioteca não encontrado.")
 
 while True:
-    time.sleep(2)
+    time.sleep(1)
     print("\n== MENU DA BIBLIOTECA ==")
     time.sleep(2)
     print("1. Adicionar Livro")
@@ -142,9 +165,8 @@ while True:
     print("4. Remover Livro")
     print("5. Emprestar Livro")
     print("6. Devolver Livro")
-    print("7. Salvar Dados")
-    print("8. Carregar Dados")
-    print("9. Sair")
+    print("7. Carregar Dados")
+    print("8. Sair")
 
     opcao = input("Escolha uma opção: ")
 
@@ -161,11 +183,9 @@ while True:
     elif opcao == "6":
         devolver_livro()
     elif opcao == "7":
-        salvar_biblioteca()
-    elif opcao == "8":
         carregar_biblioteca()
-    elif opcao == "9":
-        print("Encerrando o programa. Obrigado por usar a biblioteca!")
+    elif opcao == "8":
+        print("Obrigado por usar a biblioteca! Volte sempre !")
         break
     else:
         print("Opção inválida. Escolha uma opção válida.")
