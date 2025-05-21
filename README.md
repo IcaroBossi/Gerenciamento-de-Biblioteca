@@ -1,2 +1,2 @@
 # Gerenciamento-de-Biblioteca
-Esse projeto simula um sistema de gerenciamento de uma biblioteca
+Sistema de gerenciamento de uma biblioteca
